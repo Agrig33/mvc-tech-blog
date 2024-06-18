@@ -32,7 +32,20 @@ router.get('/edit/:id', withAuth, (req,res) => {
     Post.findByPK(req.params.id)
     .then(dbPostData => {
         if (dbPostData) {
-            
+            const post = dbPostData.get({ plain: true });
+          
+          res.render('edit-post', {
+            layout: 'dashboard',
+            post
+          });
+        } else {
+          res.status(404).end();
         }
-    })
-})
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      });
+  });
+  
+module.exports = router;
+  
